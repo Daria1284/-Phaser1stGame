@@ -96,6 +96,8 @@ function create() {
     bombs = this.physics.add.group();
     this.physics.add.collider(bombs, platforms);
     this.physics.add.collider(player, bombs, hitBomb, null, this);
+    // Додавання прослуховувача подій клавіатури для натискання клавіші "Enter"
+    this.input.keyboard.on('keydown-ENTER', restartGame, this);
 }
 
 // Оновлення гри
@@ -153,4 +155,22 @@ function hitBomb(player, bomb) {
     // Показати вікно з текстом "Game Over" та рахунком
     document.getElementById('gameOverWindow').style.display = 'block';
     document.getElementById('finalScore').textContent = score;
+}
+// Функція перезапуску гри
+function restartGame() {
+    // Перезапуск гри лише у випадку, якщо гра завершилася
+    if (gameOver) {
+        // Перезапуск гри
+        this.scene.restart();
+        
+        // Скидання рахунку та статусу завершення гри
+        score = 0;
+        gameOver = false;
+        
+        // Оновлення відображення рахунку
+        scoreText.setText('Score: ' + score);
+
+        // Приховання вікна з повідомленням про кінець гри
+        document.getElementById('gameOverWindow').style.display = 'none';
+    }
 }
