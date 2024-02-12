@@ -6,8 +6,8 @@ var config = {
     physics: {
         default: 'arcade',
         arcade: {
-            gravity: { y: 300 }, // Гравітація спрямована вниз
-            debug: false // Режим налагодження (відладка) вимкнена
+            gravity: { y: 300 }, 
+            debug: false 
         }
     },
     scene: {
