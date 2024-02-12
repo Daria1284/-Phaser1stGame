@@ -124,11 +124,16 @@ function update() {
     }
 }
 
-// Функція збирання зірок
+/// Функція збирання зірок
 function collectStar(player, star) {
     star.disableBody(true, true);
     score += 10;
     scoreText.setText('Score: ' + score);
+
+    // Перевірка, чи рахунок гравця досягнув 30
+    if (score >= 30) {
+        showSuccessScreen();
+    }
 
     // Створення бомбочки при зборі кожної зірочки
     var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
@@ -145,6 +150,11 @@ function collectStar(player, star) {
     }
 }
 
+// Функція показу додаткового екрану з текстом "Ви успішно пройшли гру"
+function showSuccessScreen() {
+    // Показати додатковий екран
+    document.getElementById('successScreen').style.display = 'block';
+}
 // Функція обробки зіткнення з бомбою
 function hitBomb(player, bomb) {
     this.physics.pause();
