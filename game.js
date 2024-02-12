@@ -143,11 +143,14 @@ function collectStar(player, star) {
     }
 }
 
-
 // Функція обробки зіткнення з бомбою
 function hitBomb(player, bomb) {
     this.physics.pause();
     player.setTint(0xff0000);
     player.anims.play('turn');
     gameOver = true;
+
+    // Показати вікно з текстом "Game Over" та рахунком
+    document.getElementById('gameOverWindow').style.display = 'block';
+    document.getElementById('finalScore').textContent = score;
 }
