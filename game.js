@@ -128,20 +128,21 @@ function collectStar(player, star) {
     score += 10;
     scoreText.setText('Score: ' + score);
 
+    // Створення бомбочки при зборі кожної зірочки
+    var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
+    var bomb = bombs.create(x, 16, 'bomb');
+    bomb.setBounce(1);
+    bomb.setCollideWorldBounds(true);
+    bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
+
     // Перевірка, чи всі зірки зібрано
     if (stars.countActive(true) === 0) {
         stars.children.iterate(function (child) {
             child.enableBody(true, child.x, 0, true, true);
         });
-
-        // Випадкове розміщення бомб
-        var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
-        var bomb = bombs.create(x, 16, 'bomb');
-        bomb.setBounce(1);
-        bomb.setCollideWorldBounds(true);
-        bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
     }
 }
+
 
 // Функція обробки зіткнення з бомбою
 function hitBomb(player, bomb) {
