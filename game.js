@@ -96,6 +96,8 @@ function create() {
     bombs = this.physics.add.group();
     this.physics.add.collider(bombs, platforms);
     this.physics.add.collider(player, bombs, hitBomb, null, this);
+    // Додавання прослуховувача подій клавіатури для натискання клавіші "Enter"
+    this.input.keyboard.on('keydown-ENTER', restartGame, this);
 }
 
 // Оновлення гри
@@ -122,11 +124,16 @@ function update() {
     }
 }
 
-// Функція збирання зірок
+/// Функція збирання зірок
 function collectStar(player, star) {
     star.disableBody(true, true);
     score += 10;
     scoreText.setText('Score: ' + score);
+
+    // Перевірка, чи рахунок гравця досягнув 30
+    if (score >= 30) {
+        showSuccessScreen();
+    }
 
     // Створення бомбочки при зборі кожної зірочки
     var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
@@ -143,6 +150,11 @@ function collectStar(player, star) {
     }
 }
 
+// Функція показу додаткового екрану з текстом "Ви успішно пройшли гру"
+function showSuccessScreen() {
+    // Показати додатковий екран
+    document.getElementById('successScreen').style.display = 'block';
+}
 // Функція обробки зіткнення з бомбою
 function hitBomb(player, bomb) {
     this.physics.pause();
@@ -153,4 +165,22 @@ function hitBomb(player, bomb) {
     // Показати вікно з текстом "Game Over" та рахунком
     document.getElementById('gameOverWindow').style.display = 'block';
     document.getElementById('finalScore').textContent = score;
+}
+// Функція перезапуску гри
+function restartGame() {
+    // Перезапуск гри лише у випадку, якщо гра завершилася
+    if (gameOver) {
+        // Перезапуск гри
+        this.scene.restart();
+        
+        // Скидання рахунку та статусу завершення гри
+        score = 0;
+        gameOver = false;
+        
+        // Оновлення відображення рахунку
+        scoreText.setText('Score: ' + score);
+
+        // Приховання вікна з повідомленням про кінець гри
+        document.getElementById('gameOverWindow').style.display = 'none';
+    }
 }
