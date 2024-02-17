@@ -22,6 +22,7 @@ var game = new Phaser.Game(config);
 var score = 0; // Початковий рахунок гравця
 var scoreText; // Текст рахунку
 var gameOver = false; // Прапорець кінця гри
+var success = false; // Прапорець успішного завершення гри
 
 // Завантаження ресурсів
 function preload() {
@@ -102,7 +103,7 @@ function create() {
 
 // Оновлення гри
 function update() {
-    if (gameOver) {
+    if (gameOver || success) {
         return;
     }
 
@@ -135,18 +136,13 @@ function collectStar(player, star) {
         showSuccessScreen();
     }
 
-    // Створення бомбочки при зборі кожної зірочки
-    var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
-    var bomb = bombs.create(x, 16, 'bomb');
-    bomb.setBounce(1);
-    bomb.setCollideWorldBounds(true);
-    bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
-
-    // Перевірка, чи всі зірки зібрано
-    if (stars.countActive(true) === 0) {
-        stars.children.iterate(function (child) {
-            child.enableBody(true, child.x, 0, true, true);
-        });
+    // Створення бомбочки при зборі кожної зірочки, за умови, що їх ще не зібрано всі
+    if (stars.countActive(true) > 0) {
+        var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
+        var bomb = bombs.create(x, 16, 'bomb');
+        bomb.setBounce(1);
+        bomb.setCollideWorldBounds(true);
+        bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
     }
 }
 
@@ -154,6 +150,18 @@ function collectStar(player, star) {
 function showSuccessScreen() {
     // Показати додатковий екран
     document.getElementById('successScreen').style.display = 'block';
+    success = true;
+    // Зупинити гравця
+    player.setVelocityX(0);
+    player.setVelocityY(0);
+    player.anims.stop();
+     // Підсвітити гравця зеленим кольором
+     player.setTint(0x00ff00); // Зелений колір
+      // Затримка перед додаванням нових бомб
+    setTimeout(function() {
+        // Вимкнути бомби
+        bombs.clear(true, true);
+    }, 60); // Затримка у мілісекундах (наприклад, 2000 мілісекунд = 2 секунди)
 }
 // Функція обробки зіткнення з бомбою
 function hitBomb(player, bomb) {
@@ -168,19 +176,21 @@ function hitBomb(player, bomb) {
 }
 // Функція перезапуску гри
 function restartGame() {
-    // Перезапуск гри лише у випадку, якщо гра завершилася
-    if (gameOver) {
+    // Перезапуск гри лише у випадку, якщо гра завершилася або успішно
+    if (gameOver || success) {
         // Перезапуск гри
         this.scene.restart();
         
         // Скидання рахунку та статусу завершення гри
         score = 0;
         gameOver = false;
+        success = false;
         
         // Оновлення відображення рахунку
         scoreText.setText('Score: ' + score);
 
-        // Приховання вікна з повідомленням про кінець гри
+        // Приховання вікна з повідомленням про кінець гри або успішне завершення
         document.getElementById('gameOverWindow').style.display = 'none';
+        document.getElementById('successScreen').style.display = 'none';
     }
 }
