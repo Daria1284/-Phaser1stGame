@@ -21,8 +21,9 @@ var config = {
 var game = new Phaser.Game(config);
 var score = 0; // Початковий рахунок гравця
 var scoreText; // Текст рахунку
-var gameOver = false; // Прапорець кінця гри
-var success = false; // Прапорець успішного завершення гри
+var gameOver = false; //  кінець гри
+var success = false; //  успішне завершення гри
+var gamePaused = false; //  призупинення гри
 
 // Завантаження ресурсів
 function preload() {
@@ -99,11 +100,13 @@ function create() {
     this.physics.add.collider(player, bombs, hitBomb, null, this);
     // Додавання прослуховувача подій клавіатури для натискання клавіші "Enter"
     this.input.keyboard.on('keydown-ENTER', restartGame, this);
+    // Додавання прослуховувача подій клавіатури для натискання клавіші "Space"
+    this.input.keyboard.on('keydown-SPACE', togglePause, this);
 }
 
 // Оновлення гри
 function update() {
-    if (gameOver || success) {
+    if (gameOver || success || gamePaused) {
         return;
     }
 
@@ -194,5 +197,15 @@ function restartGame() {
         // Приховання вікна з повідомленням про кінець гри або успішне завершення
         document.getElementById('gameOverWindow').style.display = 'none';
         document.getElementById('successScreen').style.display = 'none';
+    }
+}
+
+// Функція призупинення гри
+function togglePause() {
+    gamePaused = !gamePaused;
+    if (gamePaused) {
+        this.physics.pause();
+    } else {
+        this.physics.resume();
     }
 }
