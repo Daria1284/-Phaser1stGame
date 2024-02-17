@@ -150,7 +150,9 @@ function collectStar(player, star) {
 function showSuccessScreen() {
     // Показати додатковий екран
     document.getElementById('successScreen').style.display = 'block';
-    success = true;
+  // Встановити поточний рахунок
+  document.getElementById('currentScore').textContent = "Score: " + score;
+  success = true;
     // Зупинити гравця
     player.setVelocityX(0);
     player.setVelocityY(0);
