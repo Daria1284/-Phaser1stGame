@@ -102,6 +102,7 @@ function create() {
     this.input.keyboard.on('keydown-ENTER', restartGame, this);
     // Додавання прослуховувача подій клавіатури для натискання клавіші "Space"
     this.input.keyboard.on('keydown-SPACE', togglePause, this);
+    
 }
 
 // Оновлення гри
@@ -166,7 +167,7 @@ function showSuccessScreen() {
     setTimeout(function() {
         // Вимкнути бомби
         bombs.clear(true, true);
-    }, 60); // Затримка у мілісекундах (наприклад, 2000 мілісекунд = 2 секунди)
+    }, 60); 
 }
 // Функція обробки зіткнення з бомбою
 function hitBomb(player, bomb) {
