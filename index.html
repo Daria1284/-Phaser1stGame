@@ -6,17 +6,16 @@
     <link rel="stylesheet" href="style.css">
     <script src="//cdn.jsdelivr.net/npm/phaser@3.70.0/dist/phaser.js"></script>
     <script src="game.js"></script>
+    
+</head>
+<body>
+    <div id="successScreen" style="display: none; position: fixed; top: 0; left: 50%; transform: translateX(-50%); background-color: white; padding: 20px; border: 2px solid black;">
+        <h1>Ви успішно пройшли гру!</h1>
+    </div>
+
     <div id="gameOverWindow" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; padding: 20px; border: 2px solid black;">
         <h1>Game Over</h1>
         <p>Your score: <span id="finalScore">0</span></p>
     </div>
-    <div id="successScreen" style="display: none;">
-        <h1>Ви успішно пройшли гру!</h1>
-    </div>
-    
-    
-</head>
-<body>
-
 </body>
 </html>
